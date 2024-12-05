@@ -17,7 +17,7 @@ services:
     build:
       context: .
       args:
-        FF_VERSION: ${FF_VERSION:-9.0.0-20241026.042336}
+        FF_VERSION: ${FF_VERSION:-9.0.0-20241129.042326}
     image: wearefrank/zaakbrug:${ZAAKBRUG_VERSION:-latest}
     container_name: zaakbrug.dev
     environment:
