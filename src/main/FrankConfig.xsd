@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="9.0.0-20241026.042336">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="9.0.0-20241102.042334">
   <xs:element name="Configuration">
     <xs:annotation>
       <xs:documentation>Container of Adapters that belong together.
@@ -330,87 +330,6 @@
     <xs:attribute name="className" type="xs:string" fixed="org.frankframework.receivers.Receiver" use="prohibited" />
     <xs:attribute ref="active" />
     <xs:attribute name="elementRole" type="xs:string" fixed="receiver" use="prohibited" />
-    <xs:anyAttribute namespace="##other" processContents="skip" />
-  </xs:complexType>
-  <xs:complexType name="ParamType">
-    <xs:annotation>
-      <xs:documentation>Placeholder class to allow legacy configuration notations &lt;code&gt;&amp;lt;param type='number' /&amp;gt;&lt;/code&gt; in the new Frank!Config XSD.
- &lt;p&gt;
- The attribute &lt;code&gt;type&lt;/code&gt; has been removed in favor of explicit ParameterTypes such as: &lt;code&gt;NumberParameter&lt;/code&gt;, &lt;code&gt;DateParameter&lt;/code&gt; and &lt;code&gt;BooleanParameter&lt;/code&gt;.
- Using the new elements enables the use of auto-completion for the specified type.</xs:documentation>
-    </xs:annotation>
-    <xs:sequence>
-      <xs:group ref="ParamElementGroup" minOccurs="0" maxOccurs="unbounded" />
-    </xs:sequence>
-    <xs:attribute name="type">
-      <xs:annotation>
-        <xs:documentation>The target data type of the parameter, related to the database or XSLT stylesheet to which the parameter is applied. Default: STRING</xs:documentation>
-      </xs:annotation>
-      <xs:simpleType>
-        <xs:union memberTypes="ParameterTypeAttributeValuesType variableRef" />
-      </xs:simpleType>
-    </xs:attribute>
-    <xs:attribute name="name" type="xs:string">
-      <xs:annotation>
-        <xs:documentation>Name of the parameter</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute ref="value" />
-    <xs:attribute ref="sessionKey" />
-    <xs:attribute ref="contextKey" />
-    <xs:attribute ref="sessionKeyXPath" />
-    <xs:attribute name="styleSheetName" type="xs:string">
-      <xs:annotation>
-        <xs:documentation>URL to a stylesheet that wil be applied to the contents of the message or the value of the session-variable.</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="xpathExpression" type="xs:string">
-      <xs:annotation>
-        <xs:documentation>the XPath expression to extract the parameter value from the (xml formatted) input or session-variable.</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="xsltVersion" type="frankInt">
-      <xs:annotation>
-        <xs:documentation>If set to &lt;code&gt;2&lt;/code&gt; or &lt;code&gt;3&lt;/code&gt; a Saxon (net.sf.saxon) xslt processor 2.0 or 3.0 respectively will be used, otherwise xslt processor 1.0 (org.apache.xalan). &lt;code&gt;0&lt;/code&gt; will auto-detect Default: 0</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="namespaceDefs" type="xs:string">
-      <xs:annotation>
-        <xs:documentation>Namespace definitions for xpathExpression. Must be in the form of a comma or space separated list of
- &lt;code&gt;prefix=namespaceuri&lt;/code&gt; definitions. One entry can be without a prefix, that will define the default namespace.</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="removeNamespaces" type="frankBoolean">
-      <xs:annotation>
-        <xs:documentation>When set &lt;code&gt;true&lt;/code&gt; namespaces (and prefixes) in the input message are removed before the stylesheet/xpathExpression is executed Default: &lt;code&gt;false&lt;/code&gt;</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute ref="defaultValue" />
-    <xs:attribute ref="defaultValueMethods" />
-    <xs:attribute ref="pattern" />
-    <xs:attribute name="authAlias" type="xs:string">
-      <xs:annotation>
-        <xs:documentation>Alias used to obtain username and password, used when a &lt;code&gt;pattern&lt;/code&gt; containing {username} or {password} is specified</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="username" type="xs:string">
-      <xs:annotation>
-        <xs:documentation>Default username that is used when a &lt;code&gt;pattern&lt;/code&gt; containing {username} is specified</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="password" type="xs:string">
-      <xs:annotation>
-        <xs:documentation>Default password that is used when a &lt;code&gt;pattern&lt;/code&gt; containing {password} is specified</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute ref="ignoreUnresolvablePatternElements" />
-    <xs:attribute ref="minLength" />
-    <xs:attribute ref="maxLength" />
-    <xs:attribute ref="hidden" />
-    <xs:attribute ref="mode" />
-    <xs:attribute name="className" type="xs:string" fixed="org.frankframework.parameters.Parameter" use="prohibited" />
-    <xs:attribute ref="active" />
-    <xs:attribute name="elementRole" type="xs:string" fixed="param" use="prohibited" />
     <xs:anyAttribute namespace="##other" processContents="skip" />
   </xs:complexType>
   <xs:complexType name="PipelineType">
@@ -1108,10 +1027,10 @@
           <xs:anyAttribute processContents="skip" />
         </xs:complexType>
       </xs:element>
-      <xs:group ref="ParamElementGroupBase_2" />
+      <xs:group ref="ParamElementGroupBase" />
     </xs:choice>
   </xs:group>
-  <xs:group name="ParamElementGroupBase_2">
+  <xs:group name="ParamElementGroupBase">
     <xs:choice>
       <xs:element name="BooleanParam">
         <xs:complexType>
@@ -1158,10 +1077,30 @@
         <xs:documentation>Name of the parameter</xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute ref="value" />
-    <xs:attribute ref="sessionKey" />
-    <xs:attribute ref="contextKey" />
-    <xs:attribute ref="sessionKeyXPath" />
+    <xs:attribute name="value" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The value of the parameter, or the base for transformation using xpathExpression or stylesheet, or formatting.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="sessionKey" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>Key of a PipelineSession-variable. &lt;br/&gt;If specified, the value of the PipelineSession variable is used as input for
+ the xpathExpression or stylesheet, instead of the current input message. &lt;br/&gt;If no xpathExpression or stylesheet are
+ specified, the value itself is returned. &lt;br/&gt;If the value '*' is specified, all existing sessionkeys are added as
+ parameter of which the name starts with the name of this parameter. &lt;br/&gt;If also the name of the parameter has the
+ value '*' then all existing sessionkeys are added as parameter (except tsReceived)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="contextKey" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>key of message context variable to use as source, instead of the message found from input message or sessionKey itself</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="sessionKeyXPath" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>Instead of a fixed &lt;code&gt;sessionKey&lt;/code&gt; it's also possible to use a XPath expression applied to the input message to extract the name of the session-variable.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute name="styleSheetName" type="xs:string">
       <xs:annotation>
         <xs:documentation>URL to a stylesheet that wil be applied to the contents of the message or the value of the session-variable.</xs:documentation>
@@ -1188,9 +1127,44 @@
         <xs:documentation>When set &lt;code&gt;true&lt;/code&gt; namespaces (and prefixes) in the input message are removed before the stylesheet/xpathExpression is executed Default: &lt;code&gt;false&lt;/code&gt;</xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute ref="defaultValue" />
-    <xs:attribute ref="defaultValueMethods" />
-    <xs:attribute ref="pattern" />
+    <xs:attribute name="defaultValue" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>If the result of sessionKey, xpathExpression and/or stylesheet returns null or an empty string, this value is returned</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="defaultValueMethods" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>Comma separated list of methods (&lt;code&gt;defaultValue&lt;/code&gt;, &lt;code&gt;sessionKey&lt;/code&gt;, &lt;code&gt;pattern&lt;/code&gt;, &lt;code&gt;value&lt;/code&gt; or &lt;code&gt;input&lt;/code&gt;) to use as default value. Used in the order they appear until a non-null value is found. Default: &lt;code&gt;defaultValue&lt;/code&gt;</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="pattern" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>Value of parameter is determined using substitution and formatting, following MessageFormat syntax with named parameters. The expression can contain references
+ to &lt;code&gt;session-variables&lt;/code&gt; or other &lt;code&gt;parameters&lt;/code&gt; using the {name-of-parameter} and is formatted using java.text.MessageFormat.
+ &lt;br/&gt;&lt;b&gt;NB: When referencing other &lt;code&gt;parameters&lt;/code&gt; these MUST be defined before the parameter using pattern substitution.&lt;/b&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+ If for instance &lt;code&gt;fname&lt;/code&gt; is a parameter or session-variable that resolves to Eric, then the pattern
+ 'Hi {fname}, how do you do?' resolves to 'Hi Eric, do you do?'.&lt;br/&gt;
+ The following predefined reference can be used in the expression too:&lt;ul&gt;
+ &lt;li&gt;{now}: the current system time&lt;/li&gt;
+ &lt;li&gt;{uid}: an unique identifier, based on the IP address and java.rmi.server.UID&lt;/li&gt;
+ &lt;li&gt;{uuid}: an unique identifier, based on the IP address and java.util.UUID&lt;/li&gt;
+ &lt;li&gt;{hostname}: the name of the machine the application runs on&lt;/li&gt;
+ &lt;li&gt;{username}: username from the credentials found using authAlias, or the username attribute&lt;/li&gt;
+ &lt;li&gt;{password}: password from the credentials found using authAlias, or the password attribute&lt;/li&gt;
+ &lt;li&gt;{fixeddate}: fake date, for testing only&lt;/li&gt;
+ &lt;li&gt;{fixeduid}: fake uid, for testing only&lt;/li&gt;
+ &lt;li&gt;{fixedhostname}: fake hostname, for testing only&lt;/li&gt;
+ &lt;/ul&gt;
+ A guid can be generated using {hostname}_{uid}, see also
+ &lt;a href="http://java.sun.com/j2se/1.4.2/docs/api/java/rmi/server/uid.html"&gt;http://java.sun.com/j2se/1.4.2/docs/api/java/rmi/server/uid.html&lt;/a&gt; for more information about (g)uid's or
+ &lt;a href="http://docs.oracle.com/javase/1.5.0/docs/api/java/util/uuid.html"&gt;http://docs.oracle.com/javase/1.5.0/docs/api/java/util/uuid.html&lt;/a&gt; for more information about uuid's.
+ &lt;br/&gt;
+ When combining a date or time &lt;code&gt;pattern&lt;/code&gt; like {now} or {fixeddate} with a DATE, TIME, DATETIME or TIMESTAMP &lt;code&gt;type&lt;/code&gt;, the effective value of the attribute
+ &lt;code&gt;formatString&lt;/code&gt; must match the effective value of the formatString in the &lt;code&gt;pattern&lt;/code&gt;.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute name="authAlias" type="xs:string">
       <xs:annotation>
         <xs:documentation>Alias used to obtain username and password, used when a &lt;code&gt;pattern&lt;/code&gt; containing {username} or {password} is specified</xs:documentation>
@@ -1206,11 +1180,40 @@
         <xs:documentation>Default password that is used when a &lt;code&gt;pattern&lt;/code&gt; containing {password} is specified</xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute ref="ignoreUnresolvablePatternElements" />
-    <xs:attribute ref="minLength" />
-    <xs:attribute ref="maxLength" />
-    <xs:attribute ref="hidden" />
-    <xs:attribute ref="mode" />
+    <xs:attribute name="ignoreUnresolvablePatternElements" type="frankBoolean">
+      <xs:annotation>
+        <xs:documentation>If set &lt;code&gt;true&lt;/code&gt; pattern elements that cannot be resolved to a parameter or sessionKey are silently resolved to an empty string</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="minLength" type="frankInt">
+      <xs:annotation>
+        <xs:documentation>If set (&gt;=0) and the length of the value of the parameter falls short of this minimum length, the value is padded Default: -1</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="maxLength" type="frankInt">
+      <xs:annotation>
+        <xs:documentation>If set (&gt;=0) and the length of the value of the parameter exceeds this maximum length, the length is trimmed to this maximum length Default: -1</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="hidden" type="frankBoolean">
+      <xs:annotation>
+        <xs:documentation>If set to &lt;code&gt;true&lt;/code&gt;, the value of the parameter will not be shown in the log (replaced by asterisks) Default: &lt;code&gt;false&lt;/code&gt;</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="mode">
+      <xs:annotation>
+        <xs:documentation>Set the mode of the parameter, which determines if the parameter is an INPUT, OUTPUT, or INOUT.
+ This parameter only has effect for StoredProcedureQuerySender.
+ An OUTPUT parameter does not need to have a value specified, but does need to have the type specified.
+ Parameter values will not be updated, but output values will be put into the result of the
+ StoredProcedureQuerySender.
+ &lt;b/&gt;
+ If not specified, the default is INPUT.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:union memberTypes="ParameterModeAttributeValuesType variableRef" />
+      </xs:simpleType>
+    </xs:attribute>
     <xs:attribute ref="active" />
     <xs:anyAttribute namespace="##other" processContents="skip" />
   </xs:attributeGroup>
@@ -4039,8 +4042,8 @@
  &lt;/ul&gt;
  In the Adapter to be called:
  &lt;ul&gt;
-   &lt;li&gt;The adapter does not need to have a receiver configured to be called from a FrankSender,&lt;/li&gt;
-   &lt;li&gt;The adapter will run in the same transaction as the calling adapter,&lt;/li&gt;
+   &lt;li&gt;The adapter does not need to have a dedicated receiver configured to be called from a FrankSender.&lt;/li&gt;
+   &lt;li&gt;The adapter will run in the same transaction as the calling adapter.&lt;/li&gt;
    &lt;li&gt;If the called adapter does not to run in its own transaction, set the transaction attributes on the PipeLine attribute of this adapter
    or on the SenderPipe that contains this &lt;code&gt;FrankSender&lt;/code&gt;.&lt;/li&gt;
  &lt;/ul&gt;
@@ -9053,8 +9056,8 @@
  &lt;/ul&gt;
  In the Adapter to be called:
  &lt;ul&gt;
-   &lt;li&gt;The adapter does not need to have a receiver configured to be called from a FrankSender,&lt;/li&gt;
-   &lt;li&gt;The adapter will run in the same transaction as the calling adapter,&lt;/li&gt;
+   &lt;li&gt;The adapter does not need to have a dedicated receiver configured to be called from a FrankSender.&lt;/li&gt;
+   &lt;li&gt;The adapter will run in the same transaction as the calling adapter.&lt;/li&gt;
    &lt;li&gt;If the called adapter does not to run in its own transaction, set the transaction attributes on the PipeLine attribute of this adapter
    or on the SenderPipe that contains this &lt;code&gt;FrankSender&lt;/code&gt;.&lt;/li&gt;
  &lt;/ul&gt;
@@ -10500,7 +10503,7 @@
         <xs:complexType>
           <xs:sequence>
             <xs:choice minOccurs="0" maxOccurs="unbounded">
-              <xs:element name="Param" type="ParamType" />
+              <xs:group ref="ParamElementGroup" />
             </xs:choice>
           </xs:sequence>
           <xs:attribute ref="active" />
@@ -10589,7 +10592,7 @@
   </xs:complexType>
   <xs:group name="XslErrorMessageFormatterDeclaredChildGroup">
     <xs:sequence>
-      <xs:element name="Param" minOccurs="0" maxOccurs="unbounded" type="ParamType" />
+      <xs:group ref="ParamElementGroup" minOccurs="0" maxOccurs="unbounded" />
     </xs:sequence>
   </xs:group>
   <xs:attributeGroup name="XslErrorMessageFormatterDeclaredAttributeGroup">
@@ -11766,7 +11769,7 @@
  filename which will be wrapped into an ESB SOAP message. Please note: When
  writing files which need to be send through FxF they should be written to
  ${fxf.dir}/NNX00000/out. The property ${fxf.dir} will automatically be
- available on the OTAP environment (define it in StageSpecifics_LOC.properties
+ available on the DTAP environment (define it in StageSpecifics_LOC.properties
  only). Replace NNX00000 with the specific flowId and generate a unique
  filename (files will automatically be cleaned after 30 days or any other
  value specified by ${fxf.retention}).</xs:documentation>
@@ -12316,7 +12319,7 @@
  filename which will be wrapped into an ESB SOAP message. Please note: When
  writing files which need to be send through FxF they should be written to
  ${fxf.dir}/NNX00000/out. The property ${fxf.dir} will automatically be
- available on the OTAP environment (define it in StageSpecifics_LOC.properties
+ available on the DTAP environment (define it in StageSpecifics_LOC.properties
  only). Replace NNX00000 with the specific flowId and generate a unique
  filename (files will automatically be cleaned after 30 days or any other
  value specified by ${fxf.retention}).</xs:documentation>
@@ -13801,50 +13804,39 @@
  &lt;h3&gt;For using a 'resultString'&lt;/h3&gt;
  You can use the EchoPipe for a static value. This looked like this before:
 
- &lt;pre&gt;
- &lt;code&gt;&amp;lt;pipe name=&amp;quot;HelloWorld&amp;quot; className=&amp;quot;org.frankframework.pipes.FixedResult&amp;quot; returnString=&amp;quot;Hello World&amp;quot;&amp;gt;
+ &lt;pre&gt;&lt;code&gt;&amp;lt;pipe name=&amp;quot;HelloWorld&amp;quot; className=&amp;quot;org.frankframework.pipes.FixedResult&amp;quot; returnString=&amp;quot;Hello World&amp;quot;&amp;gt;
      &amp;lt;forward name=&amp;quot;success&amp;quot; path=&amp;quot;EXIT&amp;quot;/&amp;gt;
- &amp;lt;/pipe&amp;gt;&lt;/code&gt;
- &lt;/pre&gt;
+ &amp;lt;/pipe&amp;gt;&lt;/code&gt;&lt;/pre&gt;
  Becomes:
- &lt;pre&gt;
- &lt;code&gt;&amp;lt;pipe name=&amp;quot;HelloWorld&amp;quot; className=&amp;quot;org.frankframework.pipes.EchoPipe&amp;quot; getInputFromFixedValue=&amp;quot;Hello World&amp;quot;&amp;gt;
+ &lt;pre&gt;&lt;code&gt;&amp;lt;pipe name=&amp;quot;HelloWorld&amp;quot; className=&amp;quot;org.frankframework.pipes.EchoPipe&amp;quot; getInputFromFixedValue=&amp;quot;Hello World&amp;quot;&amp;gt;
      &amp;lt;forward name=&amp;quot;success&amp;quot; path=&amp;quot;EXIT&amp;quot;/&amp;gt;
- &amp;lt;/pipe&amp;gt;&lt;/code&gt;
- &lt;/pre&gt;
+ &amp;lt;/pipe&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 
  &lt;h3&gt;For replacing a value&lt;/h3&gt;
  You can use the ReplacerPipe to replace a value in multiple ways. First, when you need to replace a placeholder with a parameter.
  This looked like:
- &lt;pre&gt;
- &lt;code&gt;&amp;lt;pipe name=&amp;quot;make unique message&amp;quot; className=&amp;quot;org.frankframework.pipes.FixedResultPipe&amp;quot;
+ &lt;pre&gt;&lt;code&gt;&amp;lt;pipe name=&amp;quot;make unique message&amp;quot; className=&amp;quot;org.frankframework.pipes.FixedResultPipe&amp;quot;
      returnString=&amp;quot;&amp;amp;lt;msg mid=&amp;amp;quot;MID&amp;amp;quot; action=&amp;amp;quot;ACTION&amp;amp;quot; /&amp;amp;gt;&amp;quot; replaceFixedParams=&amp;quot;true&amp;quot;&amp;gt;
      &amp;lt;param name=&amp;quot;MID&amp;quot; sessionKey=&amp;quot;mid&amp;quot; /&amp;gt;
      &amp;lt;param name=&amp;quot;ACTION&amp;quot; xpathExpression=&amp;quot;request/@action&amp;quot; /&amp;gt;
- &amp;lt;/pipe&amp;gt;&lt;/code&gt;
- &lt;/pre&gt;
+ &amp;lt;/pipe&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 
  And can now be written like this (note the ?{..} syntax):
- &lt;pre&gt;
- &lt;code&gt;&amp;lt;pipe name=&amp;quot;make unique message&amp;quot; className=&amp;quot;org.frankframework.pipes.ReplacerPipe&amp;quot;
+ &lt;pre&gt;&lt;code&gt;&amp;lt;pipe name=&amp;quot;make unique message&amp;quot; className=&amp;quot;org.frankframework.pipes.ReplacerPipe&amp;quot;
      getInputFromFixedValue=&amp;quot;&amp;amp;lt;msg mid=&amp;amp;quot;?{MID}&amp;amp;quot; action=&amp;amp;quot;?{ACTION}&amp;amp;quot; /&amp;amp;gt;&amp;quot;&amp;gt;
      &amp;lt;param name=&amp;quot;MID&amp;quot; sessionKey=&amp;quot;mid&amp;quot; /&amp;gt;
      &amp;lt;param name=&amp;quot;ACTION&amp;quot; xpathExpression=&amp;quot;request/@action&amp;quot; /&amp;gt;
- &amp;lt;/pipe&amp;gt;&lt;/code&gt;
- &lt;/pre&gt;
+ &amp;lt;/pipe&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 
  When you need to replace a fixed value use the ReplacerPipe with find and replace. This looked like this:
- &lt;pre&gt;
- &lt;code&gt;&amp;lt;FixedResultPipe name=&amp;quot;InputValidateError&amp;quot;
+ &lt;pre&gt;&lt;code&gt;&amp;lt;FixedResultPipe name=&amp;quot;InputValidateError&amp;quot;
      filename=&amp;quot;ManageFileSystem/xml/ErrorMessage.xml&amp;quot;
      replaceFrom=&amp;quot;%reasonCode&amp;quot; replaceTo=&amp;quot;NOT_WELL_FORMED_XML&amp;quot;&amp;gt;
      &amp;lt;forward name=&amp;quot;success&amp;quot; path=&amp;quot;EXIT&amp;quot; /&amp;gt;
- &amp;lt;/FixedResultPipe&amp;gt;&lt;/code&gt;
- &lt;/pre&gt;
+ &amp;lt;/FixedResultPipe&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 
  And now should be solved like this:
- &lt;pre&gt;
- &lt;code&gt;&amp;lt;FixedResultPipe name=&amp;quot;InputValidateError&amp;quot;
+ &lt;pre&gt;&lt;code&gt;&amp;lt;FixedResultPipe name=&amp;quot;InputValidateError&amp;quot;
      filename=&amp;quot;ManageFileSystem/xml/ErrorMessage.xml&amp;quot;&amp;gt;
      &amp;lt;forward name=&amp;quot;success&amp;quot; path=&amp;quot;replaceReasonCode&amp;quot; /&amp;gt;
  &amp;lt;/FixedResultPipe&amp;gt;
@@ -13852,15 +13844,13 @@
      find=&amp;quot;%reasonCode&amp;quot;
      replace=&amp;quot;NOT_WELL_FORMED_XML&amp;quot;&amp;gt;
      &amp;lt;forward name=&amp;quot;success&amp;quot; path=&amp;quot;EXIT&amp;quot; /&amp;gt;
- &amp;lt;/ReplacerPipe&amp;gt;&lt;/code&gt;
- &lt;/pre&gt;
+ &amp;lt;/ReplacerPipe&amp;gt;&lt;/code&gt;&lt;/pre&gt;
  This is also an example of now using two pipes to achieve the same result. Each pipe has its own responsibility.
 
  &lt;h2&gt;More complex configurations&lt;/h2&gt;
  In some cases, a combination of the above is needed to achieve what worked before. In some cases, FixedResultPipe
  was also used to store information in the session. For example, a port of configuration in the JMS listener sender configuration looked like this:
- &lt;pre&gt;
- &lt;code&gt;&amp;lt;CompareStringPipe name=&amp;quot;compareIdAndCid&amp;quot; &amp;gt;
+ &lt;pre&gt;&lt;code&gt;&amp;lt;CompareStringPipe name=&amp;quot;compareIdAndCid&amp;quot; &amp;gt;
      &amp;lt;param name=&amp;quot;operand1&amp;quot; sessionKey=&amp;quot;id&amp;quot;/&amp;gt;
      &amp;lt;param name=&amp;quot;operand2&amp;quot; sessionKey=&amp;quot;cid&amp;quot;/&amp;gt;
      &amp;lt;forward name=&amp;quot;equals&amp;quot; path=&amp;quot;IdAndCidSame&amp;quot; /&amp;gt;
@@ -13881,12 +13871,10 @@
      &amp;lt;param name=&amp;quot;CID&amp;quot; sessionKey=&amp;quot;cid&amp;quot; /&amp;gt;
      &amp;lt;param name=&amp;quot;SAME&amp;quot; sessionKey=&amp;quot;IdAndCidSame&amp;quot; /&amp;gt;
      &amp;lt;forward name=&amp;quot;success&amp;quot; path=&amp;quot;EXIT&amp;quot; /&amp;gt;
- &amp;lt;/pipe&amp;gt;&lt;/code&gt;
- &lt;/pre&gt;
+ &amp;lt;/pipe&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 
  Was rewritten to the following:
- &lt;pre&gt;
- &lt;code&gt;&amp;lt;CompareStringPipe name=&amp;quot;compareIdAndCid&amp;quot; &amp;gt;
+ &lt;pre&gt;&lt;code&gt;&amp;lt;CompareStringPipe name=&amp;quot;compareIdAndCid&amp;quot; &amp;gt;
      &amp;lt;param name=&amp;quot;operand1&amp;quot; sessionKey=&amp;quot;id&amp;quot;/&amp;gt;
      &amp;lt;param name=&amp;quot;operand2&amp;quot; sessionKey=&amp;quot;cid&amp;quot;/&amp;gt;
      &amp;lt;forward name=&amp;quot;equals&amp;quot; path=&amp;quot;IdAndCidSame&amp;quot; /&amp;gt;
@@ -13910,8 +13898,7 @@
      &amp;lt;param name=&amp;quot;CID&amp;quot; sessionKey=&amp;quot;cid&amp;quot; /&amp;gt;
      &amp;lt;param name=&amp;quot;SAME&amp;quot; sessionKey=&amp;quot;IdAndCidSame&amp;quot; /&amp;gt;
      &amp;lt;forward name=&amp;quot;success&amp;quot; path=&amp;quot;EXIT&amp;quot; /&amp;gt;
- &amp;lt;/pipe&amp;gt;&lt;/code&gt;
- &lt;/pre&gt;
+ &amp;lt;/pipe&amp;gt;&lt;/code&gt;&lt;/pre&gt;
  &lt;p&gt;
 
  &lt;h2&gt;The features/documentation of the deprecated features&lt;/h2&gt;
@@ -14003,7 +13990,7 @@
  filename which will be wrapped into an ESB SOAP message. Please note: When
  writing files which need to be send through FxF they should be written to
  ${fxf.dir}/NNX00000/out. The property ${fxf.dir} will automatically be
- available on the OTAP environment (define it in StageSpecifics_LOC.properties
+ available on the DTAP environment (define it in StageSpecifics_LOC.properties
  only). Replace NNX00000 with the specific flowId and generate a unique
  filename (files will automatically be cleaned after 30 days or any other
  value specified by ${fxf.retention}).</xs:documentation>
@@ -14577,16 +14564,15 @@
         <xs:annotation>
           <xs:documentation>This Pipe is used to replace values in a few ways. The following steps are performed:
  &lt;ol&gt;
- &lt;li&gt;If &lt;code&gt;find&lt;/code&gt; is provided, it will be replaced by &lt;code&gt;replace&lt;/code&gt;&lt;/li&gt;
+ &lt;li&gt;If the attribute &lt;code&gt;find&lt;/code&gt; is provided, the pipe will attempt to replace the provided value with the content of the attribute &lt;code&gt;replace&lt;/code&gt;.&lt;/li&gt;
  &lt;li&gt;The resulting string is substituted based on the parameters of this pipe. It will replace values in the input enclosed
- with ?{}, for instance: ?{parameterOne}, with parameters of this pipe. If a parameter for the given value is not found, it
- will not be replaced and the '?{parameterOne}' value will remain in the output.
+ with &lt;code&gt;?{...}&lt;/code&gt;, for instance text like: &lt;code&gt;?{parameterOne}&lt;/code&gt; in combination with a parameter &lt;code&gt;parameterOne&lt;/code&gt; will use the value of this Parameter. 
+ If a parameter for the given value is not found, it will not be replaced and the &lt;code&gt;?{parameterOne}&lt;/code&gt; value will remain in the output.&lt;/li&gt;
  &lt;p&gt;
- See Parameter to see how parameter values are determined.&lt;/li&gt;
  &lt;p&gt;
  &lt;li&gt;If attribute &lt;code&gt;substituteVars&lt;/code&gt; is &lt;code&gt;true&lt;/code&gt;, then expressions &lt;code&gt;${...}&lt;/code&gt; are substituted using
  system properties, session variables and application properties. Please note that no &lt;code&gt;${...}&lt;/code&gt; patterns are left in the input. &lt;/li&gt;
- &lt;/ol&gt;</xs:documentation>
+ &lt;/ol&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;TIP&lt;/b&gt;&lt;p&gt;See Parameter to see how parameter values are determined.&lt;/p&gt;</xs:documentation>
         </xs:annotation>
         <xs:complexType>
           <xs:complexContent>
@@ -15457,11 +15443,7 @@
         <xs:documentation>Alternatively: xpath-expression to create stylesheet from</xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="namespaceDefs" type="xs:string">
-      <xs:annotation>
-        <xs:documentation>Namespace defintions for xpathExpression. Must be in the form of a comma or space separated list of &lt;code&gt;prefix=namespaceuri&lt;/code&gt;-definitions. For some use other cases (NOT xpathExpression), one entry can be without a prefix, that will define the default namespace.</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
+    <xs:attribute ref="namespaceDefs" />
     <xs:attribute name="outputType">
       <xs:annotation>
         <xs:documentation>Only valid for xpathexpression Default: text</xs:documentation>
@@ -15611,11 +15593,7 @@
         <xs:documentation>Alternatively: xpath-expression to create stylesheet from</xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="namespaceDefs" type="xs:string">
-      <xs:annotation>
-        <xs:documentation>Namespace defintions for xpathExpression. Must be in the form of a comma or space separated list of &lt;code&gt;prefix=namespaceuri&lt;/code&gt;-definitions. For some use other cases (NOT xpathExpression), one entry can be without a prefix, that will define the default namespace.</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
+    <xs:attribute ref="namespaceDefs" />
     <xs:attribute name="outputType">
       <xs:annotation>
         <xs:documentation>Only valid for xpathexpression Default: text</xs:documentation>
@@ -20557,100 +20535,6 @@
       </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
-  <xs:simpleType name="ParameterTypeAttributeValuesType">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="STRING">
-        <xs:annotation>
-          <xs:documentation>Renders the contents of the first node (in combination with xslt or xpath). Please note that
- if there are child nodes, only the contents are returned, use &lt;code&gt;XML&lt;/code&gt; if the xml tags are required</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="XML">
-        <xs:annotation>
-          <xs:documentation>Renders an xml-nodeset as an xml-string (in combination with xslt or xpath). This will include the xml tags</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="NODE">
-        <xs:annotation>
-          <xs:documentation>Renders the CONTENTS of the first node as a nodeset
- that can be used as such when passed as xslt-parameter (only for XSLT 1.0).
- Please note that the nodeset may contain multiple nodes, without a common root node.
- N.B. The result is the set of children of what you might expect it to be...</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="DOMDOC">
-        <xs:annotation>
-          <xs:documentation>Renders XML as a DOM document; similar to &lt;code&gt;node&lt;/code&gt;
-		with the distinction that there is always a common root node (required for XSLT 2.0)</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="DATE">
-        <xs:annotation>
-          <xs:documentation>Converts the result to a Date, by default using formatString &lt;code&gt;yyyy-MM-dd&lt;/code&gt;.
- When applied as a JDBC parameter, the method setDate() is used</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="TIME">
-        <xs:annotation>
-          <xs:documentation>Converts the result to a Date, by default using formatString &lt;code&gt;HH:mm:ss&lt;/code&gt;.
- When applied as a JDBC parameter, the method setTime() is used</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="DATETIME">
-        <xs:annotation>
-          <xs:documentation>Converts the result to a Date, by default using formatString &lt;code&gt;yyyy-MM-dd HH:mm:ss&lt;/code&gt;.
- When applied as a JDBC parameter, the method setTimestamp() is used</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="TIMESTAMP">
-        <xs:annotation>
-          <xs:documentation>Similar to &lt;code&gt;DATETIME&lt;/code&gt;, except for the formatString that is &lt;code&gt;yyyy-MM-dd HH:mm:ss.SSS&lt;/code&gt; by default</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="XMLDATETIME">
-        <xs:annotation>
-          <xs:documentation>Converts the result from a XML formatted dateTime to a Date.
- When applied as a JDBC parameter, the method setTimestamp() is used</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="NUMBER">
-        <xs:annotation>
-          <xs:documentation>Converts the result to a Number, using decimalSeparator and groupingSeparator.
- When applied as a JDBC parameter, the method setDouble() is used</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="INTEGER">
-        <xs:annotation>
-          <xs:documentation>Converts the result to an Integer</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="BOOLEAN">
-        <xs:annotation>
-          <xs:documentation>Converts the result to a Boolean</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="BINARY">
-        <xs:annotation>
-          <xs:documentation>Forces the parameter value to be treated as binary data (e.g. when using a SQL BLOB field).
- When applied as a JDBC parameter, the method setBinaryStream() or setBytes() is used</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="CHARACTER">
-        <xs:annotation>
-          <xs:documentation>Forces the parameter value to be treated as character data (e.g. when using a SQL CLOB field).
- When applied as a JDBC parameter, the method setCharacterStream() or setString() is used</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="LIST">
-        <xs:annotation>
-          <xs:documentation>Used for StoredProcedure OUT parameters when the database type is a &lt;code&gt;CURSOR&lt;/code&gt; or java.sql.JDBCType#REF_CURSOR.
- See also org.frankframework.jdbc.StoredProcedureQuerySender.
- &lt;br/&gt;
- DEPRECATED: Type LIST can also be used in larva test to Convert a List to an xml-string (&amp;lt;items&amp;gt;&amp;lt;item&amp;gt;...&amp;lt;/item&amp;gt;&amp;lt;item&amp;gt;...&amp;lt;/item&amp;gt;&amp;lt;/items&amp;gt;)</xs:documentation>
-        </xs:annotation>
-      </xs:enumeration>
-    </xs:restriction>
-  </xs:simpleType>
   <xs:simpleType name="LockTypeAttributeValuesType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="T">
@@ -20780,6 +20664,100 @@
       <xs:enumeration value="ENCODE" />
       <xs:enumeration value="DECODE" />
       <xs:enumeration value="CDATA2TEXT" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ParameterTypeAttributeValuesType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="STRING">
+        <xs:annotation>
+          <xs:documentation>Renders the contents of the first node (in combination with xslt or xpath). Please note that
+ if there are child nodes, only the contents are returned, use &lt;code&gt;XML&lt;/code&gt; if the xml tags are required</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="XML">
+        <xs:annotation>
+          <xs:documentation>Renders an xml-nodeset as an xml-string (in combination with xslt or xpath). This will include the xml tags</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NODE">
+        <xs:annotation>
+          <xs:documentation>Renders the CONTENTS of the first node as a nodeset
+ that can be used as such when passed as xslt-parameter (only for XSLT 1.0).
+ Please note that the nodeset may contain multiple nodes, without a common root node.
+ N.B. The result is the set of children of what you might expect it to be...</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DOMDOC">
+        <xs:annotation>
+          <xs:documentation>Renders XML as a DOM document; similar to &lt;code&gt;node&lt;/code&gt;
+		with the distinction that there is always a common root node (required for XSLT 2.0)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DATE">
+        <xs:annotation>
+          <xs:documentation>Converts the result to a Date, by default using formatString &lt;code&gt;yyyy-MM-dd&lt;/code&gt;.
+ When applied as a JDBC parameter, the method setDate() is used</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TIME">
+        <xs:annotation>
+          <xs:documentation>Converts the result to a Date, by default using formatString &lt;code&gt;HH:mm:ss&lt;/code&gt;.
+ When applied as a JDBC parameter, the method setTime() is used</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DATETIME">
+        <xs:annotation>
+          <xs:documentation>Converts the result to a Date, by default using formatString &lt;code&gt;yyyy-MM-dd HH:mm:ss&lt;/code&gt;.
+ When applied as a JDBC parameter, the method setTimestamp() is used</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TIMESTAMP">
+        <xs:annotation>
+          <xs:documentation>Similar to &lt;code&gt;DATETIME&lt;/code&gt;, except for the formatString that is &lt;code&gt;yyyy-MM-dd HH:mm:ss.SSS&lt;/code&gt; by default</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="XMLDATETIME">
+        <xs:annotation>
+          <xs:documentation>Converts the result from a XML formatted dateTime to a Date.
+ When applied as a JDBC parameter, the method setTimestamp() is used</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NUMBER">
+        <xs:annotation>
+          <xs:documentation>Converts the result to a Number, using decimalSeparator and groupingSeparator.
+ When applied as a JDBC parameter, the method setDouble() is used</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="INTEGER">
+        <xs:annotation>
+          <xs:documentation>Converts the result to an Integer</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BOOLEAN">
+        <xs:annotation>
+          <xs:documentation>Converts the result to a Boolean</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BINARY">
+        <xs:annotation>
+          <xs:documentation>Forces the parameter value to be treated as binary data (e.g. when using a SQL BLOB field).
+ When applied as a JDBC parameter, the method setBinaryStream() or setBytes() is used</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CHARACTER">
+        <xs:annotation>
+          <xs:documentation>Forces the parameter value to be treated as character data (e.g. when using a SQL CLOB field).
+ When applied as a JDBC parameter, the method setCharacterStream() or setString() is used</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LIST">
+        <xs:annotation>
+          <xs:documentation>Used for StoredProcedure OUT parameters when the database type is a &lt;code&gt;CURSOR&lt;/code&gt; or java.sql.JDBCType#REF_CURSOR.
+ See also org.frankframework.jdbc.StoredProcedureQuerySender.
+ &lt;br/&gt;
+ DEPRECATED: Type LIST can also be used in larva test to Convert a List to an xml-string (&amp;lt;items&amp;gt;&amp;lt;item&amp;gt;...&amp;lt;/item&amp;gt;&amp;lt;item&amp;gt;...&amp;lt;/item&amp;gt;&amp;lt;/items&amp;gt;)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="AlgorithmAttributeValuesType">
@@ -20995,102 +20973,6 @@
       <xs:enumeration value="CLEARING" />
     </xs:restriction>
   </xs:simpleType>
-  <xs:attribute name="value" type="xs:string">
-    <xs:annotation>
-      <xs:documentation>The value of the parameter, or the base for transformation using xpathExpression or stylesheet, or formatting.</xs:documentation>
-    </xs:annotation>
-  </xs:attribute>
-  <xs:attribute name="sessionKey" type="xs:string">
-    <xs:annotation>
-      <xs:documentation>Key of a PipelineSession-variable. &lt;br/&gt;If specified, the value of the PipelineSession variable is used as input for
- the xpathExpression or stylesheet, instead of the current input message. &lt;br/&gt;If no xpathExpression or stylesheet are
- specified, the value itself is returned. &lt;br/&gt;If the value '*' is specified, all existing sessionkeys are added as
- parameter of which the name starts with the name of this parameter. &lt;br/&gt;If also the name of the parameter has the
- value '*' then all existing sessionkeys are added as parameter (except tsReceived)</xs:documentation>
-    </xs:annotation>
-  </xs:attribute>
-  <xs:attribute name="contextKey" type="xs:string">
-    <xs:annotation>
-      <xs:documentation>key of message context variable to use as source, instead of the message found from input message or sessionKey itself</xs:documentation>
-    </xs:annotation>
-  </xs:attribute>
-  <xs:attribute name="sessionKeyXPath" type="xs:string">
-    <xs:annotation>
-      <xs:documentation>Instead of a fixed &lt;code&gt;sessionKey&lt;/code&gt; it's also possible to use a XPath expression applied to the input message to extract the name of the session-variable.</xs:documentation>
-    </xs:annotation>
-  </xs:attribute>
-  <xs:attribute name="defaultValue" type="xs:string">
-    <xs:annotation>
-      <xs:documentation>If the result of sessionKey, xpathExpression and/or stylesheet returns null or an empty string, this value is returned</xs:documentation>
-    </xs:annotation>
-  </xs:attribute>
-  <xs:attribute name="defaultValueMethods" type="xs:string">
-    <xs:annotation>
-      <xs:documentation>Comma separated list of methods (&lt;code&gt;defaultValue&lt;/code&gt;, &lt;code&gt;sessionKey&lt;/code&gt;, &lt;code&gt;pattern&lt;/code&gt;, &lt;code&gt;value&lt;/code&gt; or &lt;code&gt;input&lt;/code&gt;) to use as default value. Used in the order they appear until a non-null value is found. Default: &lt;code&gt;defaultValue&lt;/code&gt;</xs:documentation>
-    </xs:annotation>
-  </xs:attribute>
-  <xs:attribute name="pattern" type="xs:string">
-    <xs:annotation>
-      <xs:documentation>Value of parameter is determined using substitution and formatting, following MessageFormat syntax with named parameters. The expression can contain references
- to &lt;code&gt;session-variables&lt;/code&gt; or other &lt;code&gt;parameters&lt;/code&gt; using the {name-of-parameter} and is formatted using java.text.MessageFormat.
- &lt;br/&gt;&lt;b&gt;NB: When referencing other &lt;code&gt;parameters&lt;/code&gt; these MUST be defined before the parameter using pattern substitution.&lt;/b&gt;
- &lt;br/&gt;
- &lt;br/&gt;
- If for instance &lt;code&gt;fname&lt;/code&gt; is a parameter or session-variable that resolves to Eric, then the pattern
- 'Hi {fname}, how do you do?' resolves to 'Hi Eric, do you do?'.&lt;br/&gt;
- The following predefined reference can be used in the expression too:&lt;ul&gt;
- &lt;li&gt;{now}: the current system time&lt;/li&gt;
- &lt;li&gt;{uid}: an unique identifier, based on the IP address and java.rmi.server.UID&lt;/li&gt;
- &lt;li&gt;{uuid}: an unique identifier, based on the IP address and java.util.UUID&lt;/li&gt;
- &lt;li&gt;{hostname}: the name of the machine the application runs on&lt;/li&gt;
- &lt;li&gt;{username}: username from the credentials found using authAlias, or the username attribute&lt;/li&gt;
- &lt;li&gt;{password}: password from the credentials found using authAlias, or the password attribute&lt;/li&gt;
- &lt;li&gt;{fixeddate}: fake date, for testing only&lt;/li&gt;
- &lt;li&gt;{fixeduid}: fake uid, for testing only&lt;/li&gt;
- &lt;li&gt;{fixedhostname}: fake hostname, for testing only&lt;/li&gt;
- &lt;/ul&gt;
- A guid can be generated using {hostname}_{uid}, see also
- &lt;a href="http://java.sun.com/j2se/1.4.2/docs/api/java/rmi/server/uid.html"&gt;http://java.sun.com/j2se/1.4.2/docs/api/java/rmi/server/uid.html&lt;/a&gt; for more information about (g)uid's or
- &lt;a href="http://docs.oracle.com/javase/1.5.0/docs/api/java/util/uuid.html"&gt;http://docs.oracle.com/javase/1.5.0/docs/api/java/util/uuid.html&lt;/a&gt; for more information about uuid's.
- &lt;br/&gt;
- When combining a date or time &lt;code&gt;pattern&lt;/code&gt; like {now} or {fixeddate} with a DATE, TIME, DATETIME or TIMESTAMP &lt;code&gt;type&lt;/code&gt;, the effective value of the attribute
- &lt;code&gt;formatString&lt;/code&gt; must match the effective value of the formatString in the &lt;code&gt;pattern&lt;/code&gt;.</xs:documentation>
-    </xs:annotation>
-  </xs:attribute>
-  <xs:attribute name="ignoreUnresolvablePatternElements" type="frankBoolean">
-    <xs:annotation>
-      <xs:documentation>If set &lt;code&gt;true&lt;/code&gt; pattern elements that cannot be resolved to a parameter or sessionKey are silently resolved to an empty string</xs:documentation>
-    </xs:annotation>
-  </xs:attribute>
-  <xs:attribute name="minLength" type="frankInt">
-    <xs:annotation>
-      <xs:documentation>If set (&gt;=0) and the length of the value of the parameter falls short of this minimum length, the value is padded Default: -1</xs:documentation>
-    </xs:annotation>
-  </xs:attribute>
-  <xs:attribute name="maxLength" type="frankInt">
-    <xs:annotation>
-      <xs:documentation>If set (&gt;=0) and the length of the value of the parameter exceeds this maximum length, the length is trimmed to this maximum length Default: -1</xs:documentation>
-    </xs:annotation>
-  </xs:attribute>
-  <xs:attribute name="hidden" type="frankBoolean">
-    <xs:annotation>
-      <xs:documentation>If set to &lt;code&gt;true&lt;/code&gt;, the value of the parameter will not be shown in the log (replaced by asterisks) Default: &lt;code&gt;false&lt;/code&gt;</xs:documentation>
-    </xs:annotation>
-  </xs:attribute>
-  <xs:attribute name="mode">
-    <xs:annotation>
-      <xs:documentation>Set the mode of the parameter, which determines if the parameter is an INPUT, OUTPUT, or INOUT.
- This parameter only has effect for StoredProcedureQuerySender.
- An OUTPUT parameter does not need to have a value specified, but does need to have the type specified.
- Parameter values will not be updated, but output values will be put into the result of the
- StoredProcedureQuerySender.
- &lt;b/&gt;
- If not specified, the default is INPUT.</xs:documentation>
-    </xs:annotation>
-    <xs:simpleType>
-      <xs:union memberTypes="ParameterModeAttributeValuesType variableRef" />
-    </xs:simpleType>
-  </xs:attribute>
   <xs:attribute name="replyDestinationName" type="xs:string">
     <xs:annotation>
       <xs:documentation>Name of the JMS destination (queue or topic) to use for sending replies. If &lt;code&gt;useReplyTo=true&lt;/code&gt;,
@@ -22104,6 +21986,11 @@
   <xs:attribute name="schemaSessionKey" type="xs:string">
     <xs:annotation>
       <xs:documentation>Session key for retrieving a schema</xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+  <xs:attribute name="namespaceDefs" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Namespace defintions for xpathExpression. Must be in the form of a comma or space separated list of &lt;code&gt;prefix=namespaceuri&lt;/code&gt;-definitions. For some use other cases (NOT xpathExpression), one entry can be without a prefix, that will define the default namespace.</xs:documentation>
     </xs:annotation>
   </xs:attribute>
   <xs:attribute name="itemNoSessionKey" type="xs:string">
