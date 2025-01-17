@@ -15,17 +15,17 @@
             </Exits>
 
             <XsltPipe
-                name="SelectZdsRolesFromListWithMatchingIdentity"
-                styleSheetName="Common/xsl/SelectZdsRolesFromListWithMatchingIdentity.xslt"
+                name="SelectZgwRolesFromListWithMatchingIdentity"
+                styleSheetName="Common/xsl/SelectZgwRolesFromListWithMatchingIdentity.xslt"
                 >
-                <Param name="MatchWithZdsRol" sessionKey="MatchWithZdsRol" type="DOMDOC" />
+                <Param name="MatchWithZgwRol" sessionKey="MatchWithZgwRol" type="DOMDOC" />
                 <Param name="debug" value="true" />
-                <Forward name="success" path="ZdsRolMatchesExactlyOneZdsRolInList" />
+                <Forward name="success" path="ZgwRolMatchesExactlyOneZgwRolInList" />
                 <Forward name="exception" path="EXCEPTION" />
             </XsltPipe>
 
             <XmlIfPipe
-                name="ZdsRolMatchesExactlyOneZdsRolInList"
+                name="ZgwRolMatchesExactlyOneZgwRolInList"
                 xpathExpression="count(/roles/*) = 1"
                 >
                 <Forward name="then" path="exists" />

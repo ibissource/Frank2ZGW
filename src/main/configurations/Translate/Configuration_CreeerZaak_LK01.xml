@@ -89,7 +89,9 @@
                 elementXPathExpression="ZgwZaakTypen/ZgwZaakType/roltypen"
                 getInputFromSessionKey="GetZaakTypeResult"
                 >
-                <IbisLocalSender javaListener="GetRolTypenByUrl" returnedSessionKeys="Error">
+                <IbisLocalSender 
+                    javaListener="GetRolTypenByUrl" 
+                    returnedSessionKeys="Error">
                     <Param name="Url" xpathExpression="/roltypen" />
                 </IbisLocalSender>
             </ForEachChildElementPipe>

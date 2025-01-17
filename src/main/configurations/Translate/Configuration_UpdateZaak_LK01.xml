@@ -231,7 +231,54 @@
                 storeResultInSessionKey="ZdsWasZaakRol"
                 styleSheetName="Common/xsl/SelectZdsRoles.xslt"
                 >  
-                <Forward name="success" path="SelectZdsRolesFromZdsWordtZaak" />
+                <Forward name="success" path="CallGetZgwRolTypeByZaakType" />
+            </XsltPipe>
+
+            <SenderPipe
+                name="CallGetZgwRolTypeByZaakType"
+                getInputFromFixedValue="&lt;dummy/&gt;"
+                storeResultInSessionKey="ZgwRolTypen"
+                >
+                <IbisLocalSender
+                    name="GetZgwRolTypeByZaakTypeLocalSender"
+                    javaListener="Zaken_GetZgwRolTypeByZaakType"
+                    returnedSessionKeys="Error"
+                    >
+                    <Param name="ZaakTypeUrl" xpathExpression="$GetZgwZaaktypeByUrlResult/ZgwZaakType/url">
+                        <Param name="GetZgwZaaktypeByUrlResult" sessionKey="GetZgwZaaktypeByUrlResult" type="DOMDOC"/>
+                    </Param>
+                </IbisLocalSender>
+                <Forward name="success" path="CallAddRolToZgwForExistingRoles" />
+                <Forward name="exception" path="EXCEPTION" />
+            </SenderPipe>
+
+            <ForEachChildElementPipe
+                name="CallAddRolToZgwForExistingRoles"
+                getInputFromSessionKey="ZdsWasZaakRol"
+                elementXPathExpression="/roles/*"
+                storeResultInSessionKey="ZgwWasZaakRollen"
+                >
+                <IbisLocalSender
+                    name="CallAddRolToZgwSender"
+                    javaListener="AddRolToZgw"
+                    returnedSessionKeys="Error"
+                    >
+                    <Param name="ZgwRolTypen" sessionKey="ZgwRolTypen" type="DOMDOC" />
+                    <Param name="ZaakType" sessionKey="GetZgwZaaktypeByUrlResult" xpathExpression="/ZgwZaakType/identificatie" />
+                    <Param name="RolMapping" sessionKey="GlobalConfig" type="DOMDOC" />
+                </IbisLocalSender>
+                <Forward name="success" path="UnwrapOpenZaakApiEnvelopeToList" />
+                <Forward name="exception" path="EXCEPTION" />
+            </ForEachChildElementPipe>
+
+            <XsltPipe
+                name="UnwrapOpenZaakApiEnvelopeToList"
+                styleSheetName="Common/xsl/UnwrapForEachChildPipeEnvelopeToList.xslt"
+                storeResultInSessionKey="ZgwWasZaakRollen"
+                >
+                <Param name="List" value="ZgwRollen"/>
+                <Forward name="success" path="SelectZdsRolesFromZdsWordtZaak"/>
+                <Forward name="exception" path="UncaughtException" />
             </XsltPipe>
 
             <XsltPipe
@@ -251,12 +298,13 @@
                     name="CallDetectRolChangesDeleteSender"
                     javaListener="DetectRolChanges"
                     returnedSessionKeys="Error">
-                    <Param name="ZdsWasZaakRol" sessionKey="ZdsWasZaakRol" type="DOMDOC"/>
+                    <Param name="ZgwWasZaakRollen" sessionKey="ZgwWasZaakRollen" type="DOMDOC"/>
                     <Param name="ZgwZaakUrl" sessionKey="ZgwZaakUrl"/>
                     <Param name="ZaakTypeUrl" xpathExpression="$GetZgwZaaktypeByUrlResult/ZgwZaakType/url">
                         <Param name="GetZgwZaaktypeByUrlResult" sessionKey="GetZgwZaaktypeByUrlResult" type="DOMDOC"/>
                     </Param>
                     <Param name="ZaakType" sessionKey="GetZgwZaaktypeByUrlResult" type="DOMDOC" />
+                    <Param name="ZgwRolTypen" sessionKey="ZgwRolTypen" type="DOMDOC" />
                     <Param name="RolMapping" sessionKey="GlobalConfig" type="DOMDOC" />
                 </IbisLocalSender>
                 <Forward name="success" path="CallDetectRolChanges"/>
@@ -272,12 +320,13 @@
                     name="CallDetectRolChangesSender"
                     javaListener="DetectRolChanges"
                     returnedSessionKeys="Error">
-                    <Param name="ZdsWasZaakRol" sessionKey="ZdsWasZaakRol" type="DOMDOC"/>
+                    <Param name="ZgwWasZaakRollen" sessionKey="ZgwWasZaakRollen" type="DOMDOC"/>
                     <Param name="ZgwZaakUrl" sessionKey="ZgwZaakUrl"/>
                     <Param name="ZaakTypeUrl" xpathExpression="$GetZgwZaaktypeByUrlResult/ZgwZaakType/url">
                         <Param name="GetZgwZaaktypeByUrlResult" sessionKey="GetZgwZaaktypeByUrlResult" type="DOMDOC"/>
                     </Param>
                     <Param name="ZaakType" sessionKey="GetZgwZaaktypeByUrlResult" type="DOMDOC" />
+                    <Param name="ZgwRolTypen" sessionKey="ZgwRolTypen" type="DOMDOC" />
                     <Param name="RolMapping" sessionKey="GlobalConfig" type="DOMDOC" />
                 </IbisLocalSender>
                 <Forward name="success" path="WrapZdsWordtZaak"/>
